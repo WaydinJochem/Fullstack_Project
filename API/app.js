@@ -1,4 +1,4 @@
-const {express, routes} = require('./controller/productController');
+const {express, routes} = require('./controller/index');
 const app = express();
 const path = require('path');
 const port = +process.env.PORT || 2303

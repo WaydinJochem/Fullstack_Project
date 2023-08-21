@@ -36,7 +36,7 @@ class Products {
             INSERT INTO Products
             SET = ?;
         `
-        db.query(query,[data], (err)=>{
+        db.query(query, (err)=>{
             if(err) throw err
             res.json({
                 status: res.statusCode,

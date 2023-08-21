@@ -1,7 +1,7 @@
-const db = require("../config")
-const { hash, compare, hashSync } = require('bcrypt')
+const db = require("../config");
+const { hash, compare, hashSync } = require('bcrypt');
 const { createToken } =
-    require('../middleware/AuthenticateUser')
+    require('../middleware/AuthenticateUser');
 class Users {
     fetchUsers(req, res) {
         const query = `
