@@ -1,4 +1,4 @@
-const db = require("../config");
+const db = require("../config/config");
 const { hash, compare, hashSync } = require('bcrypt');
 const { createToken } =
     require('../middleware/AuthenticateUser');
@@ -33,7 +33,7 @@ class Users {
             })
     }
     login(req, res) {
-        const { emailAdd, userPass } = req.body
+        const { emailAdd, userPwd } = req.body
         // query
         const query = `
         SELECT userID, firstName, lastName, userAge, Gender, userRole, emailAdd, userPwd, userProfile
@@ -48,15 +48,15 @@ class Users {
                     msg: "You provided a wrong email."
                 })
             } else {
-                await compare(userPass,
-                    result[0].userPass,
+                await compare(userPwd,
+                    result[0].userPwd,
                     (cErr, cResult) => {
                         if (cErr) throw cErr
                         // Create a token
                         const token =
                             createToken({
                                 emailAdd,
-                                userPass
+                                userPwd
                             })
                         // Save a token
                         res.cookie("LegitUser",
@@ -84,7 +84,7 @@ class Users {
 
     async register(req, res) {
         const data = req.body;
-        
+
         if (!data.userPwd) {
             return res.json({
                 status: res.statusCode,
@@ -96,7 +96,7 @@ class Users {
         // Payload
         const user = {
             emailAdd: data.emailAdd,
-            userPass: data.userPwd
+            userPwd: data.userPwd
         }
         // Query
         const query = `

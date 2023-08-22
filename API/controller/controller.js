@@ -7,9 +7,10 @@ const { users, products } = require('../model/index');
 routes.get('/products',(req, res)=>{
     products.fetchProducts(req, res)
 });
-routes.get('products/:id', (req, res)=>{
+routes.get('/products/:id',(req, res)=>{
     products.fetchProduct(req, res)
 });
+
 routes.get('/users',(req, res)=>{
     users.fetchUsers(req, res)
 });

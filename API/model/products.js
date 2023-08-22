@@ -1,4 +1,4 @@
-const db = require("../config");
+const db = require("../config/config");
 
 class Products {
     //Show all products
@@ -22,6 +22,7 @@ class Products {
         FROM Products
         WHERE prodID = ${req.params.id};
         `
+
         db.query(query, (err, results) => {
             if (err) throw err
             res.json({

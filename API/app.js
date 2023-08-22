@@ -1,4 +1,4 @@
-const { express, routes } = require('./controller/index');
+const { express, routes } = require('./controller/controller');
 const app = express();
 const path = require('path');
 const cors = require('cors');
