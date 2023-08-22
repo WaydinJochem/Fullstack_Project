@@ -32,11 +32,12 @@ class Products {
     }
     //Add products
     addProduct(req, res) {
+
         const query = `
             INSERT INTO Products
-            SET = ?;
+            SET ? ;
         `
-        db.query(query, (err)=>{
+        db.query(query,[req.body], (err)=>{
             if(err) throw err
             res.json({
                 status: res.statusCode,
@@ -48,10 +49,10 @@ class Products {
     updateProduct(req, res) {
         const query = `
         UPDATE Products
-        SET = ?
+        SET ?
         WHERE prodID = ?;
         `
-        db.query(query,  [req.body, res.body], (err)=>{
+        db.query(query,  [req.body, req.params.id], (err)=>{
             if(err) throw err
             res.json({
                 status: res.statusCode,
