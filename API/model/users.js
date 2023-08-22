@@ -33,21 +33,76 @@ class Users {
             })
     }
     login(req, res) {
+        const { emailAdd, userPass } = req.body
+        // query
+        const query = `
+        SELECT userID, firstName, lastName, userAge, Gender, userRole, emailAdd, userPwd, userProfile
+        FROM Users
+        WHERE emailAdd = ${emailAdd};
+        `
+        db.query(query, async (err, result) => {
+            if (err) throw err
+            if (!result?.length) {
+                res.json({
+                    status: res.statusCode,
+                    msg: "You provided a wrong email."
+                })
+            } else {
+                await compare(userPass,
+                    result[0].userPass,
+                    (cErr, cResult) => {
+                        if (cErr) throw cErr
+                        // Create a token
+                        const token =
+                            createToken({
+                                emailAdd,
+                                userPass
+                            })
+                        // Save a token
+                        res.cookie("LegitUser",
+                            token, {
+                            maxAge: 3600000,
+                            httpOnly: true
+                        })
+                        if (cResult) {
+                            res.json({
+                                msg: "Logged in",
+                                token,
+                                result: result[0]
+                            })
+                        } else {
+                            res.json({
+                                status: res.statusCode,
+                                msg:
+                                    "Invalid password or you have not registered"
+                            })
+                        }
+                    })
+            }
+        })
     }
+
     async register(req, res) {
-        const data = req.body
+        const data = req.body;
+        
+        if (!data.userPwd) {
+            return res.json({
+                status: res.statusCode,
+                msg: "Password is required"
+            })
+        }
         // Encrypt password
-        data.userPass = await hash(data.userPass, 15)
+        data.userPwd = await hash(data.userPwd, 15)
         // Payload
         const user = {
             emailAdd: data.emailAdd,
-            userPass: data.userPass
+            userPass: data.userPwd
         }
         // Query
         const query = `
-        INSERT INTO Users
-        SET ?;
-        `
+            INSERT INTO Users
+            SET ?;
+            `
         db.query(query,
             [data],
             (err) => {
