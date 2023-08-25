@@ -1,35 +1,32 @@
 <template>
   <div class="content-wrap">
-    <h1>Admin</h1>
-    <div class="add-users-div">
-      <router-link to="../views/AddUserView.vue"
-        ><button class="add-user-btn">Access Users</button></router-link
-      >
-    </div>
+    <h1>Users Menu</h1>
     <table>
       <tr>
-        <th>Product ID</th>
-        <th>Product Name</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Catergory</th>
-        <th>Image URL</th>
-        <th>Action</th>
+        <th>User ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>User Role</th>
+        <th>Email Address</th>
+        <th>Password</th>
+        <th>Profile Picture</th>
+        <th>Actions</th>
       </tr>
-      <tr v-for="(product, index) in this.products" :key="index">
-        <td>{{ product.prodID }}</td>
-        <td>{{ product.prodName }}</td>
-        <td>{{ product.quantity }}</td>
-        <td>{{ product.amount }}</td>
-        <td>{{ product.Category }}</td>
-        <td>{{ product.prodUrl }}</td>
+      <tr v-for="(user, index) in this.users" :key="index">
+        <td>{{ user.userID }}</td>
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.lastName }}</td>
+        <td>{{ user.userAge }}</td>
+        <td>{{ user.Gender }}</td>
+        <td>{{ user.userRole }}</td>
+        <td>{{ user.emailAdd }}</td>
+        <td>{{ user.userPwd }}</td>
+        <td>{{ user.userProfile }}</td>
         <td>
-          <router-link
-            :to="{
-              path: '../views/' + product.prodID + '/EditProductView.vue',
-            }"
-            ><button class="edit">Edit</button></router-link
-          ><button @click="deleteProduct(product.prodID)" class="delete">
+          <button class="edit">Edit</button
+          ><button @click="deleteUser(user.userID)" class="delete">
             Delete
           </button>
         </td>
@@ -40,16 +37,13 @@
       <span v-if="loading"><img src="https://i.postimg.cc/rFXh4btK/loading-loading-forever.gif" alt="loading"></span>
     </div>
     <span v-else></span>
-    <div class="add-product-div">
-      <button @click="() => ToggleModal('btnTrigger')" class="add-product-btn">
-        Add Product
-      </button>
-      <AddProductsComp
-        v-if="modalTrigger.btnTrigger"
-        :ToggleModal="() => ToggleModal('btnTrigger')"
+    <div class="add-user-div">
+      <router-link to="./AddUser.vue"
+        ><button class="add-product-btn">Add User</button></router-link
       >
-        <h3>Add Products Menu</h3>
-      </AddProductsComp>
+      <router-link to="./AdminView.vue"
+        ><button class="close-btn">Back</button></router-link
+      >
     </div>
   </div>
 </template>
@@ -57,47 +51,35 @@
 <script>
 import axios from "axios";
 import { ref } from "vue";
-import AddProductsComp from "../components/AddProductsComp.vue";
 
 export default {
-  name: "AdminView",
-  components: {
-    AddProductsComp,
-  },
+  name: "AddUserView",
+
   data() {
-    const modalTrigger = ref({
-      btnTrigger: false,
-    });
-
-    const ToggleModal = (trigger) => {
-      modalTrigger.value[trigger] = !modalTrigger.value[trigger];
-    };
-
     return {
-      modalTrigger,
-      ToggleModal,
-      products: [],
       loading: false,
+      users: [],
     };
   },
+
   mounted() {
-    this.getProducts();
+    this.getUsers();
   },
   methods: {
-    getProducts() {
+    getUsers() {
       this.loading = !false;
-      axios.get("https://node-fullstack.onrender.com/products").then((res) => {
-        this.products = res.data.results;
+      axios.get("https://node-fullstack.onrender.com/users").then((res) => {
         this.loading = !true;
-        console.log(this.products);
+        this.users = res.data.results;
+        console.log(this.users);
       });
     },
-    deleteProduct(prodID) {
-      console.log(prodID);
+    deleteUser(userID) {
+      console.log(userID);
       axios
-        .delete(`https://node-fullstack.onrender.com/products/${prodID}`)
+        .delete(`https://node-fullstack.onrender.com/users/${userID}`)
         .then((res) => {
-          this.getProducts();
+          this.getUsers();
         });
     },
   },
@@ -180,19 +162,31 @@ td {
   background-color: rgba(4, 255, 0, 0.936);
   height: 40px;
 }
-.add-users-div {
-  text-align: right;
-  margin-top: 10px;
-  margin-right: 10px;
+.add-user-div {
+  text-align: center;
+  margin-bottom: 15px;
 }
 h1 {
   text-align: center;
   margin-top: 15px;
 }
-.loading {
-  text-align: center;
+.close-btn {
+  cursor: pointer;
   justify-content: center;
-  font-size: 30px;
+  margin: 0 0 0 15px;
+  width: 100px;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  background-color: orange;
+  height: 40px;
+  margin-right: 10px;
+}
+.close-btn:hover {
+  background-color: darkorange;
+}
+.close-btn:active {
+  background-color: rgb(255, 106, 0);
 }
 .loading-div {
   text-align: center;

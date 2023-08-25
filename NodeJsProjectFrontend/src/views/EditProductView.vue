@@ -1,4 +1,5 @@
 <template>
+  <h1>Edit Products Menu</h1>
   <div class="add-products-div">
     <div class="add-products-inner">
       <slot />
@@ -52,8 +53,8 @@
           />
         </div>
       </div>
-      <button @click="ToggleModal()" class="close-btn">Close</button>
-      <button @click="AddProduct()" class="add-product-btn">Add Product</button>
+      <button class="close-btn">Close</button>
+      <button @click="UpdateProduct()" class="add-product-btn">Add Product</button>
     </div>
   </div>
 </template>
@@ -62,8 +63,8 @@
 import axios from "axios";
 
 export default {
-  name: "AddProductsComp",
-  props: ["ToggleModal"],
+    prodID: '',
+  name: "EditProducts",
   data() {
     return {
       model: {
@@ -78,25 +79,34 @@ export default {
       },
     };
   },
+  mounted() {
+    this.getProductData(this.$route.params.id);
+    this.prodID = this.$route.params.id;
+  },
+
   methods: {
-    AddProduct() {
+    getProductData(prodID) {
       axios
-        .post(
-          "https://node-fullstack.onrender.com/products",
+        .get(`https://node-fullstack.onrender.com/products/${prodID}`)
+        .then(res => {
+          console.log(res.data.results);
+
+          this.model.product = res.data.results
+          
+        });
+    },
+
+    UpdateProduct() {
+      axios
+        .put(
+          `https://node-fullstack.onrender.com/products/${this.prodID}`,
           this.model.product
         )
         .then((res) => {
           console.log(res.data);
-          alert("You have added a new product");
+          alert("You have updated a product");
 
-          this.model.product = {
-            prodID: "",
-            prodName: "",
-            quantity: "",
-            amount: "",
-            Category: "",
-            prodUrl: "",
-          };
+          
         });
     },
   },
@@ -105,16 +115,13 @@ export default {
 
 <style scoped>
 .add-products-div {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 99;
-  background-color: rgba(0, 0, 0, 0.2);
+  position: relative;
+  margin-top: 6.5%;
+  margin-bottom: 8%;
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
 }
 .add-products-inner {
   width: 50%;
@@ -158,7 +165,7 @@ export default {
 .add-product-btn {
   cursor: pointer;
   justify-content: center;
-  margin: 0 0 0 0;
+  margin: 0 0 10px 0;
   width: 100px;
   border: none;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
@@ -172,5 +179,9 @@ export default {
 }
 .add-product-btn:active {
   background-color: rgb(0, 205, 0);
+}
+h1 {
+  text-align: center;
+  padding-top: 15px;
 }
 </style>

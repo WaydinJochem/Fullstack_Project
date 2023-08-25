@@ -30,6 +30,10 @@ nav {
     display: flex;
     height: 50px;
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    margin-bottom: 15px;
 }
 .router-link{
     color: white;
@@ -59,5 +63,13 @@ nav {
 .store-logo:active, .router-link:active, .store-logo:hover, .router-link:hover{
     color: orangered;
     text-decoration: underline;
+}
+@media only screen and (max-width: 469px){
+    nav{
+        display: flex;
+        flex-direction: column;
+        height: 10%;
+    }
+
 }
 </style>

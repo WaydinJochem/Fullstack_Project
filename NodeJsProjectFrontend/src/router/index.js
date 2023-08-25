@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import EditProduct from '../views/EditProductView.vue'
 
 const routes = [
   {
@@ -39,6 +40,20 @@ const routes = [
     path: '/src/views/AdminView.vue',
     name: 'admin',
     component: () => import('../views/AdminView.vue')
+  },
+  {
+    path: '/src/views/:id/EditProductView.vue',
+    name: 'editproducts',
+    component: EditProduct
+  },
+  {
+    path: '/src/views/AddUserView.vue',
+    name: 'adduser',
+    component: () => import('../views/AddUserView.vue')
+  },
+  {path: '/src/views/AddUser.vue',
+  name: 'AddUser',
+  component: () => import('../views/AddUser.vue')
   }
 ]
 
