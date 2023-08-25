@@ -6,6 +6,12 @@ const cookieParser = require('cookie-parser');
 const { errorHandling } = require('./middleware/errorHandling');
 const port = +process.env.PORT || 2303;
 
+const corsOptions = {
+    origin: allowedOrigins
+};
+
+const allowedOrigins = ['http://localhost:8080', 'http://localhost:8081'];
+
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Credentials", "true");
@@ -15,6 +21,7 @@ app.use((req, res, next) => {
     res.header("Access-Control-Expose-Headers", "Authorization");
     next();
 })
+
 
 app.use(express.static('./static'));
 
@@ -27,6 +34,16 @@ app.use(
     errorHandling,
     routes
 );
+
+app.use(cors({
+    origin: function (origin, callback) {
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+}));
 
 routes.get('/', (req, res) => {
     res.sendFile(path.resolve(__dirname, './static/html/index.html'))
