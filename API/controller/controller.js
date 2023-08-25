@@ -24,6 +24,9 @@ routes.post('/products',bodyParser.json(), (req, res)=>{
 routes.post('/users',bodyParser.json(), (req, res)=>{
     users.register(req, res)
 });
+routes.post('/login', (req, res)=>{
+    users.login(req, res)
+});
 //put methods
 routes.put('/products/:id', bodyParser.json(), (req, res)=>{
     products.updateProduct(req, res)
