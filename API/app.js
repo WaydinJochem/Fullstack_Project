@@ -4,13 +4,15 @@ const path = require('path');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { errorHandling } = require('./middleware/errorHandling');
-const port = +process.env.PORT || 2303;
+
+
+const allowedOrigins = ['http://localhost:8080', 'http://localhost:8081'];
+
 
 const corsOptions = {
     origin: allowedOrigins
 };
-
-const allowedOrigins = ['http://localhost:8080', 'http://localhost:8081'];
+const port = +process.env.PORT || 2303;
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
