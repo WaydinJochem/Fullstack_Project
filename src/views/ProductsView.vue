@@ -2,15 +2,14 @@
   <div class="content-wrap">
     <h1>Products Page</h1>
     <div class="page">
-      <div>
-
-        <select v-model="selectedOption">
-          <option value="1">Sort by Name Asc</option>
-          <option value="2">Sort by Name Desc</option>
-          <option value="3">Sort by Price</option>
-        </select>
-      </div>
       <div class="big-div">
+        <div>
+          <select v-model="selectedOption">
+            <option value="1">Sort by Name Asc</option>
+            <option value="2">Sort by Name Desc</option>
+            <option value="3">Sort by Price</option>
+          </select>
+        </div>
         <div class="products-div" v-if="products">
           <div class="product" v-for="product of products" :key="product">
             <div class="image-div">
